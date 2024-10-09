@@ -22,3 +22,12 @@ class Ordonnance(OrdonnanceBase):
 
     class Config:
         orm_mode = True
+
+class OrdonnanceCreate(OrdonnanceBase):
+    pass
+
+class Ordonnance(OrdonnanceBase):
+    id: int
+
+    class Config:
+        orm_mode = True

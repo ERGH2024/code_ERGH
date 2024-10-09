@@ -14,3 +14,12 @@ class TVAMarges(TVAMargesBase):
 
     class Config:
         orm_mode = True
+
+class TVAMargesCreate(TVAMargesBase):
+    pass
+
+class TVAMarges(TVAMargesBase):
+    id: int
+
+    class Config:
+        orm_mode = True

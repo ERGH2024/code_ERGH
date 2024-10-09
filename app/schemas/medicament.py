@@ -24,3 +24,12 @@ class Medicament(MedicamentBase):
 
     class Config:
         orm_mode = True
+
+class MedicamentCreate(MedicamentBase):
+    pass
+
+class Medicament(MedicamentBase):
+    id: int
+
+    class Config:
+        orm_mode = True

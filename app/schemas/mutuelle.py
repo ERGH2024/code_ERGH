@@ -14,3 +14,12 @@ class Mutuelle(MutuelleBase):
 
     class Config:
         orm_mode = True
+
+class MutuelleCreate(MutuelleBase):
+    pass
+
+class Mutuelle(MutuelleBase):
+    id: int
+
+    class Config:
+        orm_mode = True

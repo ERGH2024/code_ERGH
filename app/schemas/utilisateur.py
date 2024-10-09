@@ -18,3 +18,12 @@ class Utilisateur(UtilisateurBase):
 
     class Config:
         orm_mode = True
+
+class UtilisateurCreate(UtilisateurBase):
+    pass
+
+class Utilisateur(UtilisateurBase):
+    id: int
+
+    class Config:
+        orm_mode = True

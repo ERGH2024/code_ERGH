@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from app.db.dependency import get_db
-from .. import models, schemas
-from app.db.session import Base
+from app import models
+from app.schemas import facturation as schemas_facturation  # Import correct depuis le fichier schemas/facturation.py
+
 
 router = APIRouter(
     prefix="/facturation",
@@ -11,8 +12,8 @@ router = APIRouter(
 )
 
 # Créer une facturation
-@router.post("/", response_model=schemas.Facturation)
-def create_facturation(facturation: schemas.FacturationCreate, db: Session = Depends(get_db)):
+@router.post("/", response_model=schemas_facturation.Facturation)
+def create_facturation(facturation: schemas_facturation.FacturationCreate, db: Session = Depends(get_db)):
     db_facturation = models.Facturation(
         ordonnance_id=facturation.ordonnance_id,  # Peut être None
         patient_id=facturation.patient_id,  # Lien vers Patient
@@ -28,13 +29,13 @@ def create_facturation(facturation: schemas.FacturationCreate, db: Session = Dep
     return db_facturation
 
 # Récupérer toutes les facturations
-@router.get("/", response_model=List[schemas.Facturation])
+@router.get("/", response_model=List[schemas_facturation.Facturation])
 def get_facturations(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     facturations = db.query(models.Facturation).offset(skip).limit(limit).all()
     return facturations
 
 # Récupérer une facturation par ID
-@router.get("/{facturation_id}", response_model=schemas.Facturation)
+@router.get("/{facturation_id}", response_model=schemas_facturation.Facturation)
 def get_facturation(facturation_id: int, db: Session = Depends(get_db)):
     facturation = db.query(models.Facturation).filter(models.Facturation.id == facturation_id).first()
     if not facturation:
@@ -42,8 +43,8 @@ def get_facturation(facturation_id: int, db: Session = Depends(get_db)):
     return facturation
 
 # Mettre à jour une facturation
-@router.put("/{facturation_id}", response_model=schemas.Facturation)
-def update_facturation(facturation_id: int, facturation: schemas.FacturationCreate, db: Session = Depends(get_db)):
+@router.put("/{facturation_id}", response_model=schemas_facturation.Facturation)
+def update_facturation(facturation_id: int, facturation: schemas_facturation.FacturationCreate, db: Session = Depends(get_db)):
     db_facturation = db.query(models.Facturation).filter(models.Facturation.id == facturation_id).first()
     if not db_facturation:
         raise HTTPException(status_code=404, detail="Facturation not found")
@@ -61,7 +62,7 @@ def update_facturation(facturation_id: int, facturation: schemas.FacturationCrea
     return db_facturation
 
 # Supprimer une facturation
-@router.delete("/{facturation_id}", response_model=schemas.Facturation)
+@router.delete("/{facturation_id}", response_model=schemas_facturation.Facturation)
 def delete_facturation(facturation_id: int, db: Session = Depends(get_db)):
     db_facturation = db.query(models.Facturation).filter(models.Facturation.id == facturation_id).first()
     if not db_facturation:

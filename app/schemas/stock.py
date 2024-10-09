@@ -15,3 +15,12 @@ class Stock(StockBase):
 
     class Config:
         orm_mode = True
+
+class StockCreate(StockBase):
+    pass
+
+class Stock(StockBase):
+    id: int
+
+    class Config:
+        orm_mode = True

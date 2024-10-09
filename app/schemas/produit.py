@@ -9,3 +9,12 @@ class ProduitBase(BaseModel):
     est_medicament: bool  # Nouveau champ
     quantite_stock: int
     taux_tva_id: int
+
+class ProduitCreate(ProduitBase):
+    pass
+
+class Produit(ProduitBase):
+    id: int
+
+    class Config:
+        orm_mode = True

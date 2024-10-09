@@ -17,3 +17,12 @@ class PatientMutuelle(PatientMutuelleBase):
 
     class Config:
         orm_mode = True
+
+class PatientMutuelleCreate(PatientMutuelleBase):
+    pass
+
+class PatientMutuelle(PatientMutuelleBase):
+    id: int
+
+    class Config:
+        orm_mode = True

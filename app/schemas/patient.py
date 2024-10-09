@@ -23,3 +23,12 @@ class Patient(PatientBase):
 
     class Config:
         orm_mode = True
+
+class PatientCreate(PatientBase):
+    pass
+
+class Patient(PatientBase):
+    id: int
+
+    class Config:
+        orm_mode = True

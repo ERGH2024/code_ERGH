@@ -16,3 +16,12 @@ class JournalActivites(JournalActivitesBase):
 
     class Config:
         orm_mode = True
+
+class JournalActivitesCreate(JournalActivitesBase):
+    pass
+
+class JournalActivites(JournalActivitesBase):
+    id: int
+
+    class Config:
+        orm_mode = True
