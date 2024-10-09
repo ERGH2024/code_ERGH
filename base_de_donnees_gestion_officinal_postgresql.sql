@@ -40,20 +40,17 @@ CREATE TABLE TVA_Marges (
 
 CREATE TABLE Medicament (
     id SERIAL PRIMARY KEY,
-    nom_commercial VARCHAR(255),
-    DCI VARCHAR(255),
+    produit_id INT NOT NULL,
+    DCI VARCHAR(255), 
     dosage VARCHAR(50),
     forme VARCHAR(50),
     code_cis VARCHAR(50),
-    prix FLOAT,
     unites_volume VARCHAR(50),
-    quantite_stock INT,
     titulaire_amm VARCHAR(255),
-    taux_tva_id INT,
     date_expiration DATE,
-    description TEXT,
-    FOREIGN KEY (taux_tva_id) REFERENCES TVA_Marges(id)
+    FOREIGN KEY (produit_id) REFERENCES Produit(id)
 );
+
 
 CREATE TABLE Ordonnance (
     id SERIAL PRIMARY KEY,
@@ -72,13 +69,15 @@ CREATE TABLE Ordonnance (
 
 CREATE TABLE Facturation (
     id SERIAL PRIMARY KEY,
-    ordonnance_id INT,
+    ordonnance_id INT NULL, -- Ordonnance optionnelle
+    patient_id INT,  -- Ajout du lien avec Patient
     date_facturation DATE,
     montant FLOAT,
     statut_facturation VARCHAR(50),
     medicaments_delivres JSON,
     unites_delivrees JSON,
-    FOREIGN KEY (ordonnance_id) REFERENCES Ordonnance(id)
+    FOREIGN KEY (ordonnance_id) REFERENCES Ordonnance(id),
+    FOREIGN KEY (patient_id) REFERENCES Patient(id)  -- Lien vers Patient
 );
 
 CREATE TABLE Stock (
@@ -116,4 +115,15 @@ CREATE TABLE SessionsUtilisateur (
     date_debut TIMESTAMP,
     date_fin TIMESTAMP,
     FOREIGN KEY (utilisateur_id) REFERENCES Utilisateur(id)
+);
+
+CREATE TABLE Produit (
+    id SERIAL PRIMARY KEY,
+    nom_produit VARCHAR(255) NOT NULL,
+    prix FLOAT NOT NULL,
+    description TEXT,
+    est_medicament BOOLEAN NOT NULL DEFAULT FALSE, -- Indique si c'est un médicament
+    quantite_stock INT NOT NULL,
+    taux_tva_id INT, -- Lien vers la table TVA_Marges
+    FOREIGN KEY (taux_tva_id) REFERENCES TVA_Marges(id)
 );

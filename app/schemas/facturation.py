@@ -3,18 +3,11 @@ from pydantic import BaseModel
 from typing import Optional, List, Dict
 
 class FacturationBase(BaseModel):
-    ordonnance_id: int
-    date_facturation: str
+    ordonnance_id: Optional[int] = None  # Optionnel
+    patient_id: int  # Obligatoire
+    date_facturation: date
     montant: float
-    statut_facturation: Optional[str] = None
-    medicaments_delivres: Optional[List[Dict]] = None
-    unites_delivrees: Optional[List[Dict]] = None
+    statut_facturation: str
+    medicaments_delivrees: dict
+    unites_delivrees: dict
 
-class FacturationCreate(FacturationBase):
-    pass
-
-class Facturation(FacturationBase):
-    id: int
-
-    class Config:
-        orm_mode = True
