@@ -2,18 +2,18 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from app.db.dependency import get_db
-from .. import models
 from app.schemas import produit as schemas_produit
+from app.models.produit import Produit  # Import correct du modèle
 
 router = APIRouter(
-    prefix="/produit",  # Changement pour utiliser le singulier
+    prefix="/produit",  # Utilisation du singulier
     tags=["Produit"]    # Utilisation du singulier ici aussi
 )
 
 # Créer un produit
 @router.post("/", response_model=schemas_produit.Produit)
 def create_produit(produit: schemas_produit.ProduitCreate, db: Session = Depends(get_db)):
-    db_produit = models.Produit(
+    db_produit = Produit(  # Utilisation correcte du modèle Produit
         nom_produit=produit.nom_produit,
         prix=produit.prix,
         description=produit.description,
@@ -29,13 +29,13 @@ def create_produit(produit: schemas_produit.ProduitCreate, db: Session = Depends
 # Récupérer tous les produits
 @router.get("/", response_model=List[schemas_produit.Produit])
 def get_produits(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    produits = db.query(models.Produit).offset(skip).limit(limit).all()
+    produits = db.query(Produit).offset(skip).limit(limit).all()  # Utilisation de Produit
     return produits
 
 # Récupérer un produit par ID
 @router.get("/{produit_id}", response_model=schemas_produit.Produit)
 def get_produit(produit_id: int, db: Session = Depends(get_db)):
-    produit = db.query(models.Produit).filter(models.Produit.id == produit_id).first()
+    produit = db.query(Produit).filter(Produit.id == produit_id).first()  # Utilisation de Produit
     if not produit:
         raise HTTPException(status_code=404, detail="Produit not found")
     return produit
@@ -43,7 +43,7 @@ def get_produit(produit_id: int, db: Session = Depends(get_db)):
 # Mettre à jour un produit
 @router.put("/{produit_id}", response_model=schemas_produit.Produit)
 def update_produit(produit_id: int, produit: schemas_produit.ProduitCreate, db: Session = Depends(get_db)):
-    db_produit = db.query(models.Produit).filter(models.Produit.id == produit_id).first()
+    db_produit = db.query(Produit).filter(Produit.id == produit_id).first()  # Utilisation de Produit
     if not db_produit:
         raise HTTPException(status_code=404, detail="Produit not found")
 
@@ -61,7 +61,7 @@ def update_produit(produit_id: int, produit: schemas_produit.ProduitCreate, db: 
 # Supprimer un produit
 @router.delete("/{produit_id}", response_model=schemas_produit.Produit)
 def delete_produit(produit_id: int, db: Session = Depends(get_db)):
-    db_produit = db.query(models.Produit).filter(models.Produit.id == produit_id).first()
+    db_produit = db.query(Produit).filter(Produit.id == produit_id).first()  # Utilisation de Produit
     if not db_produit:
         raise HTTPException(status_code=404, detail="Produit not found")
 

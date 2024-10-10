@@ -19,3 +19,4 @@ class Ordonnance(Base):
     statut_facturation = Column(String)
 
     patient = relationship("Patient", back_populates="ordonnances")
+    facturations = relationship("Facturation", back_populates="ordonnance")

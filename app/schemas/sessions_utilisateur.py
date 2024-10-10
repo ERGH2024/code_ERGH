@@ -15,12 +15,3 @@ class SessionsUtilisateur(SessionsUtilisateurBase):
 
     class Config:
         orm_mode = True
-
-class SessionsUtilisateurCreate(SessionsUtilisateurBase):
-    pass
-
-class SessionsUtilisateur(SessionsUtilisateurBase):
-    id: int
-
-    class Config:
-        orm_mode = True
